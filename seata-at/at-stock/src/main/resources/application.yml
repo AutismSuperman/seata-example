@@ -1,0 +1,59 @@
+server:
+  port: 8081
+
+
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/stock?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: wangle
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+
+
+seata:
+  enabled: true
+  application-id: stock-service
+  tx-service-group: my_test_tx_group
+  client:
+    rm:
+      async-commit-buffer-limit: 1000
+      report-retry-count: 5
+      table-meta-check-enable: false
+      report-success-enable: false
+      lock:
+        retry-interval: 10
+        retry-times: 30
+        retry-policy-branch-rollback-on-conflict: true
+    tm:
+      commit-retry-count: 5
+      rollback-retry-count: 5
+    undo:
+      data-validation: true
+      log-serialization: jackson
+      log-table: undo_log
+  service:
+    vgroup-mapping:
+      my_test_tx_group: default
+    grouplist:
+      default: 127.0.0.1:8091
+  config:
+    type: nacos
+    nacos:
+      namespace:
+      serverAddr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      data-id: seataServer.properties
+  registry:
+    type: nacos
+    nacos:
+      cluster: default
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      namespace:
+
+

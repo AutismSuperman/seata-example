@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+seata:
+  enabled: true
+  application-id: business-service
+  tx-service-group: my_test_tx_group
+  service:
+    vgroup-mapping:
+      my_test_tx_group: default
+    grouplist:
+      default: 127.0.0.1:8091
+  config:
+    type: nacos
+    nacos:
+      namespace:
+      serverAddr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      data-id: seataServer.properties
+  registry:
+    type: nacos
+    nacos:
+      cluster: default
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      namespace:
+
